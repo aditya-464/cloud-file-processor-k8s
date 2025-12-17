@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: file-processor-ingress
+  namespace: cloud-file-processor
+spec:
+  rules:
+    - host: file-processor.local
+      http:
+        paths:
+          - path: /upload
+            pathType: Prefix
+            backend:
+              service:
+                name: file-upload-service
+                port:
+                  number: 8081
+          - path: /output
+            pathType: Prefix
+            backend:
+              service:
+                name: file-output-service
+                port:
+                  number: 8083
+

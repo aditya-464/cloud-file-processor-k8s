@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file-output-service
+  namespace: cloud-file-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: file-output
+  template:
+    metadata:
+      labels:
+        app: file-output
+    spec:
+      containers:
+        - name: output
+          image: adityagiri1/cloud-file-processor-file-output-service:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: EUREKA_URL
+              value: http://eureka-service:8761/eureka
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-service:5432/cloudfileprocessorv1
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: postgres@123
+
